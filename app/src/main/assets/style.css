@@ -1,0 +1,29 @@
+body{
+    background-color: blueviolet !important;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    margin-top: 100px;
+}
+input{
+    width: 300px;
+    padding: 10px;
+    border: 1px solid black;
+    box-shadow: 0 0 10px black;
+    border-radius: 10px;
+}
+button{
+    width: 100px;
+    padding: 10px;
+    border: 1px solid black;
+    box-shadow: 0 0 10px black;
+    border-radius: 10px;
+    background-color: #acd4e0;
+}
+#result{
+    text-align: center;
+    background-color: whitesmoke;
+    margin-top: 20px;
+    border: px solid black;
+    box-shadow: 0 0 10px black;
+    border-radius: 10px;
+}
