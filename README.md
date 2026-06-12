@@ -48,15 +48,7 @@ The user interface uses state-of-the-art **Glassmorphic Design Principles**, pre
 
 ---
 
-## 📸 Screenshots
 
-<p align="center">
-  <img alt="Home & Search screen" height="360" src="screenshots/a.jpg" style="border-radius:12px; margin: 10px;" />
-  <img alt="Result screen" height="360" src="screenshots/b.jpg" style="border-radius:12px; margin: 10px;" />
-  <img alt="Dynamic night state" height="360" src="screenshots/c.jpg" style="border-radius:12px; margin: 10px;" />
-</p>
-
----
 
 ## 🚀 Setup & Execution
 
