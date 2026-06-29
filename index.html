@@ -23,7 +23,13 @@
                 <span class="logo-icon">⛅</span>
                 <span class="logo-text">WeatherNow</span>
             </div>
-            <div class="datetime" id="datetime"></div>
+            <div class="header-right">
+                <div class="datetime" id="datetime"></div>
+                <label class="unit-toggle" title="Toggle Celsius/Fahrenheit">
+                    <input type="checkbox" id="unitToggle">
+                    <span class="unit-slider"></span>
+                </label>
+            </div>
         </header>
 
         <!-- Search Section -->
@@ -41,6 +47,16 @@
                     placeholder="Search city or district..." 
                     autocomplete="off"
                     spellcheck="false">
+                <button id="gpsBtn" onclick="getWeatherByGPS()" title="Use Current Location">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <circle cx="12" cy="12" r="3"/>
+                        <line x1="12" y1="1" x2="12" y2="3"/>
+                        <line x1="12" y1="21" x2="12" y2="23"/>
+                        <line x1="1" y1="12" x2="3" y2="12"/>
+                        <line x1="21" y1="12" x2="23" y2="12"/>
+                    </svg>
+                </button>
                 <button id="searchBtn" onclick="getWeather()">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="5" y1="12" x2="19" y2="12"/>
@@ -48,6 +64,7 @@
                     </svg>
                 </button>
             </div>
+            <div class="search-suggestions" id="searchSuggestions"></div>
             <div class="quick-cities">
                 <button class="city-chip" onclick="searchCity('Delhi')">Delhi</button>
                 <button class="city-chip" onclick="searchCity('Mumbai')">Mumbai</button>
@@ -114,6 +131,12 @@
                 </div>
             </div>
 
+            <!-- 5-Day Forecast Section -->
+            <div class="forecast-section" id="forecastSection">
+                <h3 class="forecast-title">5-Day Forecast</h3>
+                <div class="forecast-container" id="forecastContainer"></div>
+            </div>
+
             <!-- Detail Cards Grid -->
             <div class="details-grid">
 
@@ -170,6 +193,22 @@
                     <div class="detail-info">
                         <span class="detail-label">Sunset</span>
                         <span class="detail-value" id="sunset">--:--</span>
+                    </div>
+                </div>
+
+                <div class="detail-card">
+                    <div class="detail-icon aqi-icon">🍃</div>
+                    <div class="detail-info">
+                        <span class="detail-label">Air Quality</span>
+                        <span class="detail-value" id="aqi">—</span>
+                    </div>
+                </div>
+
+                <div class="detail-card">
+                    <div class="detail-icon cloud-icon">☁️</div>
+                    <div class="detail-info">
+                        <span class="detail-label">Cloud Cover</span>
+                        <span class="detail-value" id="cloudCover">—</span>
                     </div>
                 </div>
 

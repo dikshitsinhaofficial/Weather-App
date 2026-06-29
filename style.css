@@ -124,6 +124,7 @@ body {
     flex-direction: column;
     gap: 12px;
     width: 100%;
+    position: relative;
 }
 
 .search-wrapper {
@@ -665,4 +666,219 @@ body {
     .temp-value {
         font-size: 4rem;
     }
+}
+
+/* Header Right Area */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Celsius/Fahrenheit Unit Toggle Switch */
+.unit-toggle {
+    position: relative;
+    display: inline-block;
+    width: 46px;
+    height: 24px;
+    cursor: pointer;
+}
+
+.unit-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.unit-slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.12);
+    border: 1px solid var(--glass-border);
+    transition: .3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 24px;
+}
+
+.unit-slider:before {
+    position: absolute;
+    content: "°C";
+    font-size: 0.65rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 18px;
+    width: 18px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    color: #7c3aed;
+    border-radius: 50%;
+    transition: .3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.unit-toggle input:checked + .unit-slider {
+    background-color: rgba(56, 189, 248, 0.2);
+    border-color: rgba(56, 189, 248, 0.4);
+}
+
+.unit-toggle input:checked + .unit-slider:before {
+    transform: translateX(22px);
+    content: "°F";
+    color: #0284c7;
+}
+
+/* GPS Button inside search wrapper */
+#gpsBtn {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text-secondary);
+    padding: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    margin-right: 4px;
+    border-radius: 10px;
+}
+
+#gpsBtn:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.08);
+    transform: scale(1.05);
+}
+
+#gpsBtn:active {
+    transform: scale(0.95);
+}
+
+/* Search Suggestions dropdown list */
+.search-suggestions {
+    display: none;
+    flex-direction: column;
+    background: rgba(15, 23, 42, 0.9);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    z-index: 100;
+}
+
+.suggestion-item {
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: background 0.2s ease;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.suggestion-text {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.suggestion-remove {
+    color: rgba(255, 255, 255, 0.3);
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.suggestion-remove:hover {
+    color: #fca5a5;
+    background: rgba(239, 68, 68, 0.15);
+}
+
+/* 5-Day Forecast styles */
+.forecast-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 5px;
+    animation: slideUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.forecast-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    padding-left: 4px;
+}
+
+.forecast-container {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 4px 2px;
+    scrollbar-width: none;
+}
+
+.forecast-container::-webkit-scrollbar {
+    display: none;
+}
+
+.forecast-card {
+    flex: 1 0 78px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+    padding: 12px 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    box-shadow: var(--glass-shadow);
+    transition: all 0.2s ease;
+}
+
+.forecast-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.forecast-day {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.forecast-icon {
+    font-size: 1.8rem;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));
+}
+
+.forecast-temp {
+    font-size: 0.9rem;
+    font-weight: 700;
 }
