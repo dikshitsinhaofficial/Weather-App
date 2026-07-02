@@ -44,6 +44,7 @@ const forecastContainer = document.getElementById("forecastContainer");
 
 // Cache / History
 let recentSearches = JSON.parse(localStorage.getItem('recent_searches')) || [];
+let locationSuggestions = [];
 
 // Initialize application
 document.addEventListener("DOMContentLoaded", () => {
@@ -73,6 +74,18 @@ document.addEventListener("DOMContentLoaded", () => {
             searchSuggestions.style.display = "flex";
         }
     });
+
+  // Fetch location suggestions as user types
+  cityInput.addEventListener('input', async (e) => {
+    const query = e.target.value.trim();
+    if (!query) {
+      searchSuggestions.style.display = 'none';
+      locationSuggestions = [];
+      return;
+    }
+    locationSuggestions = await fetchLocationSuggestions(query);
+    renderSuggestions();
+  });
 
     // Dismiss suggestions when clicking outside
     document.addEventListener("click", (e) => {
@@ -547,33 +560,46 @@ function renderSuggestions() {
         return;
     }
 
-    recentSearches.forEach(city => {
+    // Helper to create item
+    const createItem = (text, isHistory) => {
         const item = document.createElement("div");
         item.classList.add("suggestion-item");
-
-        const textDiv = document.createElement("div");
-        textDiv.classList.add("suggestion-text");
-        textDiv.innerHTML = `<span>⏳</span><span>${city}</span>`;
-
-        const clearBtn = document.createElement("span");
-        clearBtn.classList.add("suggestion-remove");
-        clearBtn.textContent = "Clear";
-        clearBtn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            removeFromHistory(city);
-        });
-
-        item.appendChild(textDiv);
-        item.appendChild(clearBtn);
-
-        item.addEventListener("click", () => {
-            cityInput.value = city;
+        item.textContent = text;
+        item.onclick = () => {
+            cityInput.value = text;
+            getWeather(text);
             searchSuggestions.style.display = "none";
-            getWeather();
-        });
+        };
+        return item;
+    };
 
-        searchSuggestions.appendChild(item);
+    // Render Location Suggestions (API)
+    locationSuggestions.forEach(loc => {
+        const displayName = `${loc.name}${loc.state ? ', ' + loc.state : ''}, ${loc.country}`;
+        searchSuggestions.appendChild(createItem(displayName, false));
     });
+
+    // Render Recent Searches
+    recentSearches.forEach(city => {
+        if (!locationSuggestions.find(l => l.name === city)) {
+            searchSuggestions.appendChild(createItem(city, true));
+        }
+    });
+
+    searchSuggestions.style.display = "block";
+}
+
+// Fetch location suggestions from OpenWeather Geocoding API
+async function fetchLocationSuggestions(query) {
+    const url = `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(query)}&limit=5&appid=${apiKey}`;
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        return data;
+    } catch (err) {
+        console.error('Error fetching location suggestions', err);
+        return [];
+    }
 }
 
 // Inject keyframes for custom animations at runtime if not present
