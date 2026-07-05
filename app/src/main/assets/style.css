@@ -658,6 +658,30 @@ body {
     50% { transform: scale(1.05); }
 }
 
+/* Theme classes added for dynamic backgrounds */
+.weather-clear {
+    background: var(--bg-gradient-clear) !important;
+}
+.weather-clouds {
+    background: var(--bg-gradient-clouds) !important;
+}
+.weather-rain {
+    background: var(--bg-gradient-rain) !important;
+}
+.weather-thunderstorm {
+    background: var(--bg-gradient-thunderstorm) !important;
+}
+.weather-snow {
+    background: var(--bg-gradient-snow) !important;
+}
+.weather-night {
+    background: var(--bg-gradient-night) !important;
+}
+/* Ensure weather result container displays flex when visible */
+.weather-result.show {
+    display: flex !important;
+}
+
 /* Responsive adjustments */
 @media (max-width: 380px) {
     .details-grid {

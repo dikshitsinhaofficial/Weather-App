@@ -192,13 +192,16 @@ function refreshWeather() {
 
 // Helper to switch view states
 function showState(activeState) {
+    // Hide all sections
     welcomeState.style.display = "none";
     loadingState.style.display = "none";
     errorState.style.display = "none";
     weatherResult.style.display = "none";
+    weatherResult.classList.remove('show');
 
+    // Show the requested state
     if (activeState === weatherResult) {
-        activeState.style.display = "flex";
+        weatherResult.classList.add('show');
     } else if (activeState) {
         activeState.style.display = "flex";
     }
