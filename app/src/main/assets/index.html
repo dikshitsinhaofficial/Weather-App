@@ -29,6 +29,11 @@
                     <input type="checkbox" id="unitToggle">
                     <span class="unit-slider"></span>
                 </label>
+                <!-- Dark Mode Toggle -->
+                <label class="dark-mode-toggle" title="Toggle Dark Mode">
+                    <input type="checkbox" id="darkModeToggle">
+                    <span class="dark-mode-slider"></span>
+                </label>
             </div>
         </header>
 
@@ -134,7 +139,9 @@
             <!-- 5-Day Forecast Section -->
             <div class="forecast-section" id="forecastSection">
                 <h3 class="forecast-title">5-Day Forecast</h3>
-                <div class="forecast-container" id="forecastContainer"></div>
+                <button class="carousel-prev" id="carouselPrev">‹</button>
+                <div class="forecast-container carousel" id="forecastContainer"></div>
+                <button class="carousel-next" id="carouselNext">›</button>
             </div>
 
             <!-- Detail Cards Grid -->

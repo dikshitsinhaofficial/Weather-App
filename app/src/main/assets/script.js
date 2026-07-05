@@ -66,6 +66,18 @@ document.addEventListener("DOMContentLoaded", () => {
         refreshWeather();
     });
 
+    // Dark mode toggle
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    darkModeToggle.addEventListener('change', () => {
+        document.body.classList.toggle('dark-mode');
+        localStorage.setItem('darkMode', darkModeToggle.checked);
+    });
+    // Initialize dark mode based on saved preference
+    if (localStorage.getItem('darkMode') === 'true') {
+        darkModeToggle.checked = true;
+        document.body.classList.add('dark-mode');
+    }
+
     // Show suggestions on focus
     cityInput.addEventListener("focus", () => {
         if (recentSearches.length > 0) {
@@ -79,6 +91,17 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!cityInput.contains(e.target) && !searchSuggestions.contains(e.target) && !gpsBtn.contains(e.target)) {
             searchSuggestions.style.display = "none";
         }
+    });
+
+    // Carousel navigation for forecast
+    const carouselPrev = document.getElementById('carouselPrev');
+    const carouselNext = document.getElementById('carouselNext');
+    const forecastContainerEl = document.getElementById('forecastContainer');
+    carouselPrev.addEventListener('click', () => {
+        forecastContainerEl.scrollBy({ left: -200, behavior: 'smooth' });
+    });
+    carouselNext.addEventListener('click', () => {
+        forecastContainerEl.scrollBy({ left: 200, behavior: 'smooth' });
     });
 });
 
