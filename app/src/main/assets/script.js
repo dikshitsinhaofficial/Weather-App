@@ -93,6 +93,55 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    // Debounce utility
+    function debounce(func, wait) {
+        let timeout;
+        return (...args) => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), wait);
+        };
+    }
+
+    // Fetch location suggestions from OpenWeatherMap Geocoding API
+    async function fetchLocationSuggestions(query) {
+        if (!query) return [];
+        const url = `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(query)}&limit=5&appid=${apiKey}`;
+        try {
+            const resp = await fetch(url);
+            if (!resp.ok) return [];
+            const data = await resp.json();
+            // Map to display string: city, state (if any), country
+            return data.map(loc => ({
+                name: loc.name,
+                state: loc.state || '',
+                country: loc.country || ''
+            }));
+        } catch (e) {
+            console.error('Suggestion fetch error', e);
+            return [];
+        }
+    }
+
+    // Handle input for dynamic suggestions
+    const handleInput = debounce(async () => {
+        const query = cityInput.value.trim();
+        if (query.length < 2) {
+            searchSuggestions.style.display = 'none';
+            return;
+        }
+        const results = await fetchLocationSuggestions(query);
+        if (results.length > 0) {
+            renderSuggestions(results);
+            searchSuggestions.style.display = 'flex';
+        } else {
+            // fallback to recent searches if no API results
+            renderSuggestions();
+            if (recentSearches.length > 0) searchSuggestions.style.display = 'flex';
+        }
+    }, 300);
+
+    cityInput.addEventListener('input', handleInput);
+
     // Carousel navigation for forecast
     const carouselPrev = document.getElementById('carouselPrev');
     const carouselNext = document.getElementById('carouselNext');
@@ -566,38 +615,39 @@ function removeFromHistory(cityName) {
     }
 }
 
-function renderSuggestions() {
+function renderSuggestions(suggestions = null) {
     searchSuggestions.innerHTML = "";
-    if (recentSearches.length === 0) {
+    // If suggestions are provided (from API), display them; otherwise fall back to recent searches
+    const list = suggestions && suggestions.length > 0 ? suggestions : recentSearches.map(name => ({ name }));
+    if (list.length === 0) {
         searchSuggestions.style.display = "none";
         return;
     }
-
-    recentSearches.forEach(city => {
+    list.forEach(itemData => {
         const item = document.createElement("div");
         item.classList.add("suggestion-item");
-
         const textDiv = document.createElement("div");
         textDiv.classList.add("suggestion-text");
-        textDiv.innerHTML = `<span>⏳</span><span>${city}</span>`;
-
-        const clearBtn = document.createElement("span");
-        clearBtn.classList.add("suggestion-remove");
-        clearBtn.textContent = "Clear";
-        clearBtn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            removeFromHistory(city);
-        });
-
+        const displayName = itemData.state ? `${itemData.name}, ${itemData.state}, ${itemData.country}` : `${itemData.name}, ${itemData.country || ''}`;
+        textDiv.innerHTML = `<span>📍</span><span>${displayName}</span>`;
+        // If this is a recent search (no state/country), add clear button
+        if (!itemData.state && !itemData.country) {
+            const clearBtn = document.createElement("span");
+            clearBtn.classList.add("suggestion-remove");
+            clearBtn.textContent = "Clear";
+            clearBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                removeFromHistory(itemData.name);
+            });
+            item.appendChild(clearBtn);
+        }
         item.appendChild(textDiv);
-        item.appendChild(clearBtn);
-
+        // Click selects the suggestion
         item.addEventListener("click", () => {
-            cityInput.value = city;
+            cityInput.value = itemData.name;
             searchSuggestions.style.display = "none";
             getWeather();
         });
-
         searchSuggestions.appendChild(item);
     });
 }
