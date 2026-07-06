@@ -1,6 +1,6 @@
 /* Modern & Unique Glassmorphic Weather App Styling */
 :root {
-    --bg-gradient-default: linear-gradient(135deg, #4f46e5, #7c3aed, #c084fc);
+    --bg-gradient-default: linear-gradient(135deg, #0f172a, #1e293b, #0f766e);
     --bg-gradient-clear: linear-gradient(135deg, #f59e0b, #d97706, #3b82f6);
     --bg-gradient-clouds: linear-gradient(135deg, #64748b, #475569, #94a3b8);
     --bg-gradient-rain: linear-gradient(135deg, #1e293b, #0f172a, #3b82f6);
